@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication
 
-from ui.windows.main_window import MainScreen
+from app.ui.windows.main_window import MainScreen
 
 
 def main():
