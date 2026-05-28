@@ -19,8 +19,14 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QFont, QColor
 
 from app.ui.styles.theme import build_stylesheet, DARK, LIGHT
+from app.shared.dict.pt_br import STRINGS as PT_BR
+
+LANGUAGES = {
+    "pt_BR": PT_BR
+}
 
 _THEME = LIGHT
+current_language = "pt_BR"
 
 # ---------------------------------------------------------------------------
 # Toolbar action button
@@ -120,13 +126,16 @@ class FilterBar(QFrame):
 
         self.search_input = QLineEdit()
         self.search_input.setObjectName("searchInput")
-        self.search_input.setPlaceholderText("Buscar componente, código, fornecedor…")
+        self.search_input.setPlaceholderText(LANGUAGES[current_language].get("search_input_text"))
         self.search_input.setFont(QFont("Segoe UI", 11))
         self.search_input.setFixedHeight(24)
         layout.addWidget(self.search_input, stretch=1)
 
-
-        for label in ("Todos", "Ativos", "Críticos", "Inativos"):
+        for label in (
+            LANGUAGES[current_language].get("all_filter_bar"),
+            LANGUAGES[current_language].get("actives_filter_bar"),
+            LANGUAGES[current_language].get("critical_filter_bar"),
+            LANGUAGES[current_language].get("inactives_filter_bar")):
             btn = QPushButton(label)
             btn.setObjectName("filterChip")
             btn.setCheckable(True)
@@ -261,14 +270,14 @@ class ContentArea(QWidget):
         header_layout = QHBoxLayout(header)
         header_layout.setContentsMargins(16, 0, 16, 0)
 
-        page_title = QLabel("Inventário de Componentes")
+        page_title = QLabel(LANGUAGES[current_language].get("comps_status_title"),)
         page_title.setObjectName("pageTitle")
         page_title.setFont(QFont("Segoe UI", 15, QFont.Bold))
         header_layout.addWidget(page_title)
 
         header_layout.addStretch()
 
-        breadcrumb = QLabel("PCBStock  ›  Estoque  ›  Inventário")
+        breadcrumb = QLabel("DELETAR!!!! PCBStock  ›  Estoque  ›  InventárioDELETAR!!!! ")
         breadcrumb.setObjectName("breadcrumb")
         breadcrumb.setFont(QFont("Segoe UI", 10))
         header_layout.addWidget(breadcrumb)
@@ -296,7 +305,13 @@ class TitleBar(QFrame):
         spacer = QWidget()
         layout.addWidget(spacer)
 
-        for label in ("Arquivo", "Editar", "Exibir", "Ferramentas", "Ajuda"):
+        for label in (
+            LANGUAGES[current_language].get("file_menu_bar_button"),
+            LANGUAGES[current_language].get("edit_menu_bar_button"),
+            LANGUAGES[current_language].get("show_menu_bar_button"),
+            LANGUAGES[current_language].get("tools_menu_bar_button"),
+            LANGUAGES[current_language].get("help_menu_bar_button")
+        ):
             btn = QPushButton(label)
             btn.setObjectName("menuBarButton")
             btn.setFont(QFont("Segoe UI", 11))
@@ -311,31 +326,31 @@ class TitleBar(QFrame):
 def _build_toolbar() -> MainToolbar:
     toolbar = MainToolbar()
 
-    stock_group = toolbar.add_group("Estoque")
-    stock_group.add_button("📦", "Novo Item")
-    stock_group.add_button("📥", "Entrada")
-    stock_group.add_button("📤", "Saída")
-    stock_group.add_button("🔄", "Ajuste")
+    stock_group = toolbar.add_group(LANGUAGES[current_language].get("stock_subgroup"))
+    stock_group.add_button("📦", LANGUAGES[current_language].get("new_item_button"))
+    stock_group.add_button("📥", LANGUAGES[current_language].get("receivement_button"))
+    stock_group.add_button("📤", LANGUAGES[current_language].get("shipment_button"))
+    stock_group.add_button("🔄", LANGUAGES[current_language].get("adjustments_button"))
 
-    orders_group = toolbar.add_group("Pedidos")
-    orders_group.add_button("📋", "Novo Pedido")
-    orders_group.add_button("🧩", "Viabilidade")
-    orders_group.add_button("✅", "Aprovar")
+    orders_group = toolbar.add_group(LANGUAGES[current_language].get("orders_subgroup"))
+    orders_group.add_button("📋", LANGUAGES[current_language].get("register_order_button"))
+    orders_group.add_button("🧩", LANGUAGES[current_language].get("order_viability_button"))
+    orders_group.add_button("✅", LANGUAGES[current_language].get("aprove_button"))
 
-    receiving_group = toolbar.add_group("Recebimento")
-    receiving_group.add_button("🔍", "Inspecionar")
-    receiving_group.add_button("📑", "NF Entrada")
+    receiving_group = toolbar.add_group(LANGUAGES[current_language].get("entrance_subgroup"))
+    receiving_group.add_button("🔍", LANGUAGES[current_language].get("inspect_button"))
+    receiving_group.add_button("📑", LANGUAGES[current_language].get("invoice_button"))
 
-    reports_group = toolbar.add_group("Relatórios")
-    reports_group.add_button("📊", "Inventário")
-    reports_group.add_button("📈", "Moviment.")
-    reports_group.add_button("💾", "Exportar")
+    reports_group = toolbar.add_group(LANGUAGES[current_language].get("reports_subgroup"))
+    reports_group.add_button("📊", LANGUAGES[current_language].get("stock_button"))
+    reports_group.add_button("📈", LANGUAGES[current_language].get("movement_button"))
+    reports_group.add_button("💾", LANGUAGES[current_language].get("export_button"))
 
     toolbar.add_stretch()
 
-    config_group = toolbar.add_group("Sistema")
-    config_group.add_button("⚙️", "Config.")
-    config_group.add_button("🌙", "Tema")
+    config_group = toolbar.add_group(LANGUAGES[current_language].get("system_subgroup"))
+    config_group.add_button("⚙️", LANGUAGES[current_language].get("config_button"))
+    config_group.add_button("🌙", LANGUAGES[current_language].get("theme_button"))
 
     return toolbar
 
@@ -346,7 +361,7 @@ def _build_toolbar() -> MainToolbar:
 class MainScreen(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PCBStock — Gestão de Estoque Eletrônico")
+        self.setWindowTitle(LANGUAGES[current_language].get("app_title"))
         self.resize(1280, 800)
         self.setStyleSheet(build_stylesheet(_THEME))
 

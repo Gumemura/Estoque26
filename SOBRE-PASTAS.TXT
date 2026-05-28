@@ -1,8 +1,8 @@
 
 inventory_system/
+├── main.py
 │
 ├── app/
-│   ├── main.py
 │   │
 │   ├── core/
 │   │   ├── database.py
