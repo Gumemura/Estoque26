@@ -5,6 +5,7 @@ import uuid
 
 alembic_cfg = Config("alembic.ini")
 
+### DELETAR! ISSO NAO PODE IR PRA PROD! ###
 def create_migration():
     command.revision(
         alembic_cfg,

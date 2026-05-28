@@ -1,0 +1,9 @@
+from typing import Protocol
+
+from app.infrastructure.database.models.product_model import ProductModel
+
+
+class ProductRepositoryProtocol(Protocol):
+    def create(self, product: ProductModel) -> ProductModel: ...
+    def get_by_internal_code(self, internal_code: str) -> ProductModel | None: ...
+    def get_all(self) -> list[ProductModel]: ...
